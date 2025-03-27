@@ -3,10 +3,9 @@ Views for Dog APIs.
 """
 
 
-from django.shortcuts import render
 from .models import Breed, Dog
 from .serializers import BreedSerializer, DogSerializer
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets
 from django.db.models import Prefetch
 
 

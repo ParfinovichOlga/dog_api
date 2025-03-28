@@ -31,7 +31,7 @@ class Dog(models.Model):
     """Dog object."""
     genders = (('male', 'Male'), ('female', 'Female'))
     name = models.CharField(max_length=50)
-    age = models.IntegerField()
+    age = models.IntegerField(null=True)
     breed = models.ForeignKey(
         Breed, on_delete=models.CASCADE, related_name='dogs'
         )

@@ -5,9 +5,7 @@ dog_api includes two main endpoints:
 - api/dogs
 
 api/breeds has additional field with dogs count of current breed.
-
 api/dogs has additional field with average dog age of this breed.
-
 api/dogs/{id} has additional field with dogs count of its breed.
 
 
@@ -16,4 +14,4 @@ api/dogs/{id} has additional field with dogs count of its breed.
 - docker-compose up
 
 ## Usage
-See the api swagger documentation localhost:8000/api/docs when docker container was run
+See the api swagger documentation on localhost:8000/api/docs when docker container is run

@@ -30,7 +30,7 @@ class DogSerializer(DogBaseSerializer):
 
 
 class DogDetailSerializer(DogBaseSerializer):
-    """Serializer for dogs list."""
+    """Serializer for retrieving dog."""
     dogs_count = serializers.SerializerMethodField()
 
     class Meta(DogBaseSerializer.Meta):
@@ -40,12 +40,22 @@ class DogDetailSerializer(DogBaseSerializer):
         return instance.dogs_count
 
 
-class BreedSerializer(serializers.ModelSerializer):
-    """Serializer for breeds."""
-    dogs = DogBaseSerializer(many=True, required=False, read_only=True)
+class BreedDetailSerializer(serializers.ModelSerializer):
+    """Serializer for retrieving breed."""
 
     class Meta:
         model = Breed
         fields = ['id', 'name', 'size', 'friendliness', 'trainability',
-                  'shedding_amount', 'exercise_needs', 'dogs']
+                  'shedding_amount', 'exercise_needs']
         read_only_fields = ['id']
+
+
+class BreedSerializer(BreedDetailSerializer):
+    """Serializer for breed list."""
+    dogs_count = serializers.SerializerMethodField()
+
+    class Meta(BreedDetailSerializer.Meta):
+        fields = BreedDetailSerializer.Meta.fields + ['dogs_count']
+
+    def get_dogs_count(self, instance):
+        return instance.dogs_count

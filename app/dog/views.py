@@ -12,15 +12,25 @@ from django.db.models.expressions import Window
 
 class BreedViewSet(viewsets.ModelViewSet):
     """View for manage recipe APIs."""
-    serializer_class = serializers.BreedSerializer
-    queryset = Breed.objects.all().prefetch_related(
-        Prefetch('dogs', queryset=Dog.objects.all().order_by('name'))
-    )
+    serializer_class = serializers.BreedDetailSerializer
+    queryset = Breed.objects.all()
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return self.queryset.prefetch_related('dogs').only('id').annotate(
+                dogs_count=Count('dogs')
+                ).order_by('name')
+        return self.queryset
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.BreedSerializer
+        return self.serializer_class
 
 
 class DogViewSet(viewsets.ModelViewSet):
     """View for manage recipe APIs."""
-    serializer_class = serializers.DogDetailSerializer
+    serializer_class = serializers.DogBaseSerializer
     queryset = Dog.objects.all()
 
     def get_queryset(self):
@@ -36,6 +46,6 @@ class DogViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return serializers.DogSerializer
-        if self.action == 'create':
-            return serializers.DogBaseSerializer
+        if self.action == 'retrieve':
+            return serializers.DogDetailSerializer
         return self.serializer_class
